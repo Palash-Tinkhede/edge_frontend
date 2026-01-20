@@ -93,6 +93,8 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
                   <th className="px-4 py-3 text-left">IP</th>
                   <th className="px-4 py-3 text-left">CPU</th>
                   <th className="px-4 py-3 text-left">Memory</th>
+
+
                   <th className="px-4 py-3 text-left">Last Updated</th>
                   <th className="px-4 py-3 text-left"></th>
                 </tr>
@@ -105,9 +107,20 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
                     className="hover:bg-[#161c24] transition"
                   >
                     <td className="px-4 py-3">
-                     
-                        {node.name}
-                      
+                      <a
+                          href={node.status === "offline" ? undefined : `/monitor/${node.name}`}
+                         
+                          
+                                className={`px-3 py-1 text-s font-medium  transition
+                                  ${
+                                    node.status === "offline"
+                                      ? "text-gray-500 text-lg font-medium "
+                                      : "text-blue-400 text-lg font-medium hover:underline"
+                                  }
+                                `}
+                        >
+                          {node.name}
+                        </a>
                     </td>
 
                     <td className="px-4 py-3">
@@ -130,8 +143,9 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
                       {node.memory}
                     </td>
 
+                   
                     <td className="px-4 py-3 text-gray-400">
-                      {node.lastUpdated}
+                     {new Date().toLocaleString()}
                     </td>
 
                     <td className="px-4 py-3">
@@ -174,4 +188,3 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
 
   );
 }
-
