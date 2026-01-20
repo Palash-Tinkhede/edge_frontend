@@ -19,7 +19,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/' element={<LandingDashboard />} />
-        <Route path='/monitor' element={<Monitor />} />
+        <Route path="/monitor/:nodeName?" element={<Monitor />} />
         <Route path='/nodes' element={<RemoteAccess />} />
         <Route path='/landing_dashboard' element={<LandingDashboard />} />
         <Route path='/vm_page' element={<VmPage />} />
