@@ -39,7 +39,7 @@ const normalizeStatus = (status) => {
 const ActivityTable = () => {
   const [clusterData, setClusterData] = useState(null);
   const [loading, setLoading] = useState(true);
-const [dcIpByIndex, setDcIpByIndex] = useState({});
+const [dcIpByIndex, setDcIpByIndex] = useState([]);
 
 const BACKEND_URL = `http://${window.location.hostname}:4002`;
 
@@ -145,23 +145,25 @@ if (loading) {
     <tr key={index} style={{ borderBottom: '1px solid #2d3748' }}>
       {/* Cluster Name */}
       <td className="p-3">
-        <a
-          href={
-            dcIp
-              ? `https://${dcIp}:2224/ui/cluster/${cluster.cluster?.name || cluster.name}/overview`
-              : "#"
-          }
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            color: dcIp ? '#63b3ed' : '#718096',
-            fontWeight: 'bold',
-            pointerEvents: dcIp ? 'auto' : 'none'
-          }}
-        >
-          {cluster.cluster?.name || cluster.name}
-        </a>
-      </td>
+  <a
+    href={
+      cluster.status === "offline" || !dcIp
+        ? undefined
+        : `https://${dcIp}:2224/ui/cluster/${cluster.cluster?.name || cluster.name}/overview`
+    }
+   
+    className={`px-3 py-1 text-s font-medium rounded transition
+      ${
+        cluster.status === "offline"
+          ? "text-gray-500 text-lg font-medium "
+          : "text-blue-400 text-lg font-medium hover:underline"
+      }
+    `}
+  >
+    {cluster.cluster?.name || cluster.name}
+  </a>
+</td>
+
 
       {/* Status */}
       <td className="p-3">
