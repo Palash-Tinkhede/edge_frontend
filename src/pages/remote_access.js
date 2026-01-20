@@ -150,7 +150,7 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
 
                     <td className="px-4 py-3">
                         <button
-                                  onClick={() => window.open(node.remote_access, "_blank")}
+                                  onClick={() => window.open(node.remote_access, "_blank")}    
                                   disabled={node.status === "offline"}
                                   className={`px-3 py-1 text-xs font-medium rounded transition
                                                     ${
@@ -188,3 +188,4 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
 
   );
 }
+
