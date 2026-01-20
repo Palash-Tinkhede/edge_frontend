@@ -152,7 +152,7 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
                         <button
                                   onClick={() => window.open(node.remote_access, "_blank")}    
                                   disabled={node.status === "offline"}
-                                  className={`px-3 py-1 text-xs font-medium rounded transition
+                                  className={`px-3 py-1 text-s font-medium rounded transition
                                                     ${
                                                       node.status === "offline"
                                                         ? "bg-gray-600/20 text-gray-500 cursor-not-allowed"
@@ -188,4 +188,5 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
 
   );
 }
+
 
