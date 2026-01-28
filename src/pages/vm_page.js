@@ -31,7 +31,8 @@ useEffect(() => {
   const [nodes, setNodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = localStorage.getItem("user");
-const BACKEND_URL = `http://${window.location.hostname}:4002`;
+const BACKEND_URL = `/server`;
+
   useEffect(() => {
     const token = localStorage.getItem("userdbtoken");
     if (!token) {
@@ -39,21 +40,25 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
       return;
     }
 
+
     fetch(`${BACKEND_URL}/api/node-data`, {})
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((node) => ({
+
           id: node._id,
           name: node.node_name,
           status: node.status, // or derive from heartbeat later
           role: "member",
+
           ip: node.ip_address,
           cpu: `${node.cpu_cores} vCPU`,
           memory: `${node.memory_gb} GB`,
           lastUpdated: new Date(node.last_updated).toLocaleString(),
-          link: `https://${node.ip_address}:8001/login.html`,
+          link: `${node.link}/wok/login.html`,
          
         }));
+
 
         setNodes(formatted);
         setLoading(false);
@@ -138,7 +143,8 @@ console.log(nodes)
 
                       <td className="px-4 py-3">
                         <button
-                                  onClick={() => window.open(node.link, "_blank")}
+                                  onClick={() => window.location.href = node.link}
+
                                   disabled={node.status === "offline"}
                                    className={` px-3 py-1 text-lg font-medium  rounded  transition
                                                     ${
@@ -150,6 +156,7 @@ console.log(nodes)
                       >
                         VM Management
                       </button>
+
                     </td>
                     </tr>
 
