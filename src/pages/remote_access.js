@@ -32,7 +32,7 @@ export default function NodesTable() {
   const [nodes, setNodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = localStorage.getItem("user");
-const BACKEND_URL = `http://${window.location.hostname}:4002`;
+const BACKEND_URL = `/server`;
   useEffect(() => {
     const token = localStorage.getItem("userdbtoken");
     if (!token) {
@@ -52,8 +52,8 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
           cpu: `${node.cpu_cores} vCPU`,
           memory: `${node.memory_gb} GB`,
           lastUpdated: new Date(node.last_updated).toLocaleString(),
-          remote_access: `http://${node.ip_address}:3000/wetty`,
-          link: `/monitor`,
+          remote_access: `${node.link}/wetty`,
+          link: `${node.link}/performa`,
         }));
 
         setNodes(formatted);
@@ -150,7 +150,7 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
 
                     <td className="px-4 py-3">
                         <button
-                                  onClick={() => window.open(node.remote_access, "_blank")}    
+                                  onClick={() => window.open(node.remote_access, "_blank")}
                                   disabled={node.status === "offline"}
                                   className={`px-3 py-1 text-s font-medium rounded transition
                                                     ${
@@ -188,5 +188,3 @@ const BACKEND_URL = `http://${window.location.hostname}:4002`;
 
   );
 }
-
-
