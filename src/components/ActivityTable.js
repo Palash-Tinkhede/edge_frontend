@@ -41,7 +41,7 @@ const ActivityTable = () => {
   const [loading, setLoading] = useState(true);
 const [dcIpByIndex, setDcIpByIndex] = useState([]);
 
-const BACKEND_URL = `http://${window.location.hostname}:4002`;
+const BACKEND_URL = `/server`;
 
 
 const resolveDcIpsByClusterIndex = async (clusters) => {
