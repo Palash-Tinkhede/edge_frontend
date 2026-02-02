@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Dropdown from "../components/dropdown";
 
-const BACKEND_URL = `http://${window.location.hostname}:4002`;
+const BACKEND_URL = `/server`;
 
 const Monitoring = () => {
   const navigate = useNavigate();
@@ -34,19 +34,29 @@ const Monitoring = () => {
   }, []);
 
   /* ===== ROUTE → NODE IP → IFRAME ===== */
+  /* ===== ROUTE → NODE IP → IFRAME ===== */
   useEffect(() => {
     if (!nodeName || nodes.length === 0) return;
 
     const node = nodes.find(
-      n => n.node_name === nodeName && n.status === "online"
+      (n) => n.node_name === nodeName && n.status === "online"
     );
 
     if (node) {
-      setIframeSrc(`http://${node.ip_address}:5511`);
+      // 1. Detect if current access is via IP address
+      const isIP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(window.location.hostname);
+
+      // 2. Determine base URL (IP vs Domain)
+      // Note: Adjust port (e.g., :3000) if your IP-based access requires it
+      console.log(node.ip_address);
+      const baseUrl = isIP ? `http://${node.ip_address}:5511` : `${node.link}/performa/`;
+
+      // 3. Set the final source
+      setIframeSrc(`${baseUrl}`);
     } else {
-      navigate("/404")
+      navigate("/404");
     }
-  }, [nodeName, nodes]);
+  }, [nodeName, nodes, navigate]);
 
   /* ===== FULL PAGE LOADING ===== */
   if (loading) {
