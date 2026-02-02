@@ -52,10 +52,10 @@ const resolveDcIpsByClusterIndex = async (clusters) => {
     // Build lookup: normalized node name -> ip
     const nodeIpMap = {};
     nodeData.forEach(node => {
-      if (!node.node_name || !node.ip_address) return;
+      if (!node.node_name || !node.link) return;
 
       const shortName = node.node_name.split('-')[0];
-      nodeIpMap[node.node_name] = node.ip_address;
+      nodeIpMap[node.node_name] = node.link;
    
     });
 
@@ -107,7 +107,7 @@ if (loading) {
   }
 
   if (!clusterData) return <p className="text-white p-4">No data available</p>;
-//console.log(clusterData)
+
   const cluster = clusterData;
   const nodes = cluster.nodes || [];
 
@@ -149,7 +149,7 @@ if (loading) {
     href={
       cluster.status === "offline" || !dcIp
         ? undefined
-        : `https://${dcIp}:2224/ui/cluster/${cluster.cluster?.name || cluster.name}/overview`
+        : `${dcIp}/ui/cluster/${cluster.cluster?.name || cluster.name}`
     }
    
     className={`px-3 py-1 text-s font-medium rounded transition
