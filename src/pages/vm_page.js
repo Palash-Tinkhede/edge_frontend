@@ -44,20 +44,27 @@ const BACKEND_URL = `/server`;
     fetch(`${BACKEND_URL}/api/node-data`, {})
       .then((res) => res.json())
       .then((data) => {
-        const formatted = data.map((node) => ({
+       const isIP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(
+  window.location.hostname
+);
 
-          id: node._id,
-          name: node.node_name,
-          status: node.status, // or derive from heartbeat later
-          role: "member",
+const formatted = data.map((node) => ({
+  id: node._id,
+  name: node.node_name,
+  status: node.status,
+  role: "member",
+  ip: node.ip_address,
+  cpu: `${node.cpu_cores} vCPU`,
+  memory: `${node.memory_gb} GB`,
+  lastUpdated: new Date(node.last_updated).toLocaleString(),
 
-          ip: node.ip_address,
-          cpu: `${node.cpu_cores} vCPU`,
-          memory: `${node.memory_gb} GB`,
-          lastUpdated: new Date(node.last_updated).toLocaleString(),
-          link: `${node.link}/wok/login.html`,
-         
-        }));
+  // ✅ VM management redirect logic
+  link: isIP
+    ? `https://${node.ip_address}/wok/login.html`
+    : `${node.link}/wok/login.html`,
+}));
+
+      
 
 
         setNodes(formatted);
