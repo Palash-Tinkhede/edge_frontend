@@ -39,26 +39,37 @@ const BACKEND_URL = `/server`;
       navigate("/login");
       return;
     }
-
+   console.log(window.location.hostname);
+   
     fetch(`${BACKEND_URL}/api/node-data`, {})
       .then((res) => res.json())
       .then((data) => {
-        const formatted = data.map((node) => ({
-          id: node._id,
-          name: node.node_name,
-          status: node.status, // or derive from heartbeat later
-          role: "member",
-          ip: node.ip_address,
-          cpu: `${node.cpu_cores} vCPU`,
-          memory: `${node.memory_gb} GB`,
-          lastUpdated: new Date(node.last_updated).toLocaleString(),
-          remote_access: `${node.link}/wetty`,
-          link: `${node.link}/performa`,
-        }));
+  // Regex to check if hostname is an IP address
+  const isIP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(window.location.hostname);
 
-        setNodes(formatted);
-        setLoading(false);
-      })
+  const formatted = data.map((node) => {
+    // Determine the base URL: Use node.ip_address if on an IP, otherwise use node.link
+    // We add http:// if it's an IP and doesn't have a protocol
+    const baseUrl = isIP ? `https://${node.ip_address}` : node.link; 
+
+    return {
+      id: node._id,
+      name: node.node_name,
+      status: node.status,
+      role: "member",
+      ip: node.ip_address,
+      cpu: `${node.cpu_cores} vCPU`,
+      memory: `${node.memory_gb} GB`,
+      lastUpdated: new Date(node.last_updated).toLocaleString(),
+      // Dynamically set based on the current hostname
+      remote_access: `${baseUrl}/wetty`,
+      link: `${baseUrl}/performa`,
+    };
+  });
+
+  setNodes(formatted);
+  setLoading(false);
+})
       .catch((err) => {
         console.error("Failed to fetch nodes:", err);
       });
